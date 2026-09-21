@@ -21,5 +21,4 @@ Link pra outra página do Brain usando markdown normal, tipo [Guia de tom de voz
 
 ## teste
 
-
 teste
