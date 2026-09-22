@@ -10,8 +10,6 @@ tags: [n8n, automação, boas-praticas, workflows]
 Este documento reúne recomendações para construir workflows no n8n de forma organizada, segura e fácil de manter.
 
 
-## testando 
-
 ## 1. Organização de workflows
 
 - **Nomeie workflows de forma descritiva**, indicando o processo de negócio e, quando aplicável, o time responsável (ex: `[Financeiro] Conciliação de Pagamentos`).
