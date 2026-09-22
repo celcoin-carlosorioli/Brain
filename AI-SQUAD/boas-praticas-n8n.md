@@ -1,14 +1,16 @@
 ---
-title: Boas Práticas no uso do n8n
-description: Guia de boas práticas para construção, organização e manutenção de workflows no n8n
+titulo: Boas Práticas no uso do n8n
+categoria: AI-SQUAD
+confidencialidade: publico
 tags: [n8n, automação, boas-praticas, workflows]
-date: 2026-09-22
-author: Carlos Orioli
 ---
 
 # Boas Práticas no uso do n8n
 
 Este documento reúne recomendações para construir workflows no n8n de forma organizada, segura e fácil de manter.
+
+
+## testando 
 
 ## 1. Organização de workflows
 
