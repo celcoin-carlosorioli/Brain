@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rmdir \"/home/carlosorioli/projetos/Brain/AI-SQUAD/boas-praticas-n8n.md\")"
+    ],
+    "additionalDirectories": [
+      "/home/carlosorioli/projetos/Brain/AI-SQUAD/boas-praticas-n8n.md"
+    ]
+  }
+}
