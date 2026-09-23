@@ -9,18 +9,20 @@ tags: [n8n, automação, boas-praticas, workflows, desenvolvimento , padrões, f
 # Boas Práticas de Desenvolvimento — Celcoin
 
 
-## 1. Os dois tipos de projeto
 
-Na Celcoin trabalhamos com dois modelos de desenvolvimento diferentes, e as boas práticas mudam um pouco entre eles:
+## 1. Os tipos de projeto
 
-- **Projetos de codebase**: repositórios de código tradicionais, como o **cel_bot** e o **Gira**, além dos workflows de automação no **N8N**. Aqui o time programa diretamente (com ou sem apoio de agentes de IA).
+Na Celcoin trabalhamos com três modelos diferentes, e as boas práticas mudam um pouco entre eles:
+
+- **Projetos de codebase**: repositórios de código tradicionais, como o **cel_bot** e o **Gira**. Aqui o time programa diretamente (com ou sem apoio de agentes de IA).
+- **Projetos de automação (N8N)**: workflows de automação — não é código de aplicação, é orquestração de integrações, tem regras próprias de acesso e segurança.
 - **Projetos Lovable**: aplicações construídas na plataforma Lovable (ex.: **KYP Vision**, **Brain**), onde um agente de IA da própria Lovable escreve o código a partir de prompts.
 
 As seções abaixo detalham as práticas recomendadas para cada caso.
 
 ---
 
-## 2. Projetos de codebase (cel_bot, Gira, N8N)
+## 2. Projetos de codebase (cel_bot, Gira)
 
 ### 2.1 Jira — toda tarefa precisa de card
 
@@ -47,7 +49,6 @@ As seções abaixo detalham as práticas recomendadas para cada caso.
 
 - Nunca expor chaves de API, tokens, senhas ou strings de conexão diretamente no código, em arquivos de configuração versionados, ou em qualquer branch (mesmo temporária).
 - Usar sempre variáveis de ambiente / gerenciador de segredos. Se encontrar uma credencial hardcoded em código existente, reportar para rotação imediata em vez de reutilizá-la.
-- **N8N**: a mesma regra vale para workflows — nunca expor API keys direto nos nodes. Utilizar sempre as conexões/credenciais já cadastradas no workspace do N8N, em vez de colar chaves manualmente nos nodes.
 
 ### 2.5 GitHub — conta e identidade
 
@@ -56,13 +57,30 @@ As seções abaixo detalham as práticas recomendadas para cada caso.
 
 ---
 
-## 3. Projetos Lovable (KYP Vision, Brain)
+## 3. Projetos de automação (N8N)
+
+N8N é automação/orquestração de integrações, não código de aplicação — por isso tem regras próprias, separadas dos projetos de codebase.
+
+### 3.1 Acesso
+
+- Para acessar o N8N é preciso primeiro estar conectado na VPN, pelo app **OpenVPN GUI** — sem VPN, não tem acesso ao workspace.
+- O login no N8N em si é feito por **SAML**.
+
+### 3.2 Segurança — API keys e credenciais
+
+- Nunca expor API keys direto nos nodes/workflows.
+- Utilizar sempre as conexões/credenciais já cadastradas no workspace do N8N, em vez de colar chaves manualmente nos nodes.
+- Se encontrar uma credencial hardcoded em um workflow existente, reportar para rotação imediata em vez de reutilizá-la.
+
+---
+
+## 4. Projetos Lovable (KYP Vision, Brain)
 
 > **Ponto de atenção**: nem todo projeto Lovable é mantido por nós depois de pronto. Muitas vezes quem pediu a demanda e fica responsável pela manutenção é outro time, não-técnico. Nós não somos um time de sustentação — não vamos estar sempre por perto para corrigir problema de login solto, tela de usuário reinventada ou domínio mal configurado depois que o projeto sai das nossas mãos. Por isso esse checklist é obrigatório e não opcional: é o que garante que o projeto continue seguro e consistente mesmo sendo mantido por quem não tem bagagem técnica.
 
-### 3.1 Todo projeto novo precisa ter (checklist obrigatório)
+### 4.1 Todo projeto novo precisa ter (checklist obrigatório)
 
-Esse checklist vale para **ferramentas internas** — qualquer projeto que tenha login, dados de uso interno ou seja usado por colaboradores (o padrão do KYP Vision, Skills Catalog, Gira etc.). Para **sites/páginas públicas** (institucional, landing page, demo de vendas, portal de documentação), que não têm login nem usuário interno, esse checklist não se aplica — usar o template B da seção 5.2 nesses casos.
+Esse checklist vale para **ferramentas internas** — qualquer projeto que tenha login, dados de uso interno ou seja usado por colaboradores (o padrão do KYP Vision, Skills Catalog, Gira etc.). Para **sites/páginas públicas** (institucional, landing page, demo de vendas, portal de documentação), que não têm login nem usuário interno, esse checklist não se aplica — usar o template B da seção 6.2 nesses casos.
 
 Para ferramentas internas, todo projeto novo criado no Lovable precisa sair com os seguintes itens configurados, sem exceção:
 
@@ -74,7 +92,7 @@ Para ferramentas internas, todo projeto novo criado no Lovable precisa sair com 
 
 Para o item de Cloudflare/domínio, pedir para o **Gabriel Monteiro** ou para o **Meirinho** fazerem essa configuração — não configurar por conta própria.
 
-### 3.2 Usar o Claude conectado ao Lovable
+### 4.2 Usar o Claude conectado ao Lovable
 
 Em vez de digitar prompts direto no chat do Lovable, o recomendado é usar o **Claude conectado ao Lovable** (via conector/MCP) para montar e enviar os prompts. Isso ajuda porque o Claude consegue:
 
@@ -85,27 +103,27 @@ Em vez de digitar prompts direto no chat do Lovable, o recomendado é usar o **C
 
 Na prática, isso reduz o número de iterações (e créditos) gastos no Lovable, porque o prompt já chega mais completo e direcionado.
 
-### 3.3 Escolha do modelo/agente
+### 4.3 Escolha do modelo/agente
 
 - Usar **Claude Sonnet 5 (esforço médio)** como padrão para o dia a dia — é suficiente para a grande maioria das tarefas de desenvolvimento.
 - Reservar agentes mais avançados (esforço mais alto, orquestração com múltiplos agentes) apenas para casos de **extrema necessidade**: tarefas muito complexas, investigações profundas ou quando o Sonnet 5 médio não for suficiente para resolver o problema.
 
 ---
 
-## 4. Regra geral de uso de IA
+## 5. Regra geral de uso de IA
 
 - Usar apenas as ferramentas de IA fornecidas/homologadas pela empresa (Claude, Cursor, as API keys fornecidas pela empresa e os conectores oficiais).
 - **Não usar IA de uso pessoal** (contas pessoais de ChatGPT, Claude, etc.) para trabalho da Celcoin — por segurança da informação e confidencialidade dos dados de clientes, parceiros e da própria empresa.
 
 ---
 
-## 5. Templates de contexto para iniciar um projeto novo
+## 6. Templates de contexto para iniciar um projeto novo
 
-Usar o template abaixo como primeira mensagem para o agente — seja direto no Lovable, seja pelo Claude conectado ao Lovable (ver seção 3.2). Preencher os campos entre `<>` e colar antes de pedir qualquer implementação. Tem dois templates: **A** para ferramenta interna (com login e banco de dados) e **B** para site/página pública (sem login). Usar o que corresponde ao tipo de projeto (ver seção 3.1).
+Usar o template abaixo como primeira mensagem para o agente — seja direto no Lovable, seja pelo Claude conectado ao Lovable (ver seção 4.2). Preencher os campos entre `<>` e colar antes de pedir qualquer implementação. Tem dois templates: **A** para ferramenta interna (com login e banco de dados) e **B** para site/página pública (sem login). Usar o que corresponde ao tipo de projeto (ver seção 4.1).
 
-### 5.1 Template A — Ferramenta interna (Lovable + Supabase)
+### 6.1 Template A — Ferramenta interna (Lovable + Supabase)
 
-Cobre boa parte do checklist obrigatório da seção 3.1 em nível de código (design system, SSO, RLS). SendGrid e Cloudflare/domínio continuam sendo configuração manual — não esquecer de fazer depois (ou pedir para o Gabriel Monteiro/Meirinho, no caso do domínio).
+Cobre boa parte do checklist obrigatório da seção 4.1 em nível de código (design system, SSO, RLS). SendGrid e Cloudflare/domínio continuam sendo configuração manual — não esquecer de fazer depois (ou pedir para o Gabriel Monteiro/Meirinho, no caso do domínio).
 
 ```
 # Contexto do projeto
@@ -162,7 +180,7 @@ Não escreva código ainda. Me devolva:
 4. As perguntas que você tem sobre o escopo
 ```
 
-### 5.2 Template B — Site/página pública (sem login)
+### 6.2 Template B — Site/página pública (sem login)
 
 Para institucional, landing page, portal de documentação ou demo de vendas — sem usuário logado, sem RLS, sem gestão de papéis. O ponto de atenção aqui é outro: design system, performance e domínio/publicação corretos.
 
@@ -199,4 +217,4 @@ Não escreva código ainda. Me devolva:
 
 ---
 
-*Última atualização: 22/09/2026. Dúvidas ou sugestões de ajuste, falar com o time de desenvolvimento.*
+*Última atualização: 23/09/2026. Dúvidas ou sugestões de ajuste, falar com o time de desenvolvimento.*
