@@ -6,10 +6,6 @@ tags: [n8n, automação, boas-praticas, workflows, desenvolvimento , padrões, f
 ---
 
 
-# Boas Práticas de Desenvolvimento — Celcoin
-
-
-
 ## 1. Os tipos de projeto
 
 Na Celcoin trabalhamos com três modelos diferentes, e as boas práticas mudam um pouco entre eles:
